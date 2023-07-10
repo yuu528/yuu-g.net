@@ -11,12 +11,14 @@ import CardList from '@/components/CardList.vue'
 export default {
   data: () => ({
     contents: [
+      /*
       {
         title: 'test',
         text: 'description',
         link: 'link',
         href: 'https://example.com'
       }
+      */
     ],
     links: [
       {

@@ -1,9 +1,9 @@
 <template>
-  <v-container>
+  <v-container class="my-4">
     <v-row>
       <div class="text-h4">{{ title }}</div>
     </v-row>
-    <v-row>
+    <v-row v-if="list.length">
       <v-col
         cols="12" sm="6" md="4" lg="3" xl="3" xxl="2"
         v-for="content in list" :key="content.title"
@@ -18,6 +18,9 @@
           </v-card-actions>
         </v-card>
       </v-col>
+    </v-row>
+    <v-row v-else>
+      <div class="ml-2">準備中です！</div>
     </v-row>
   </v-container>
 </template>
