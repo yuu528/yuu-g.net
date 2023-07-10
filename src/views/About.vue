@@ -12,28 +12,15 @@
       <v-col
         cols="12" sm="10" md="10" lg="8" xl="6" xxl="6"
       >
-        <v-card title="経歴">
-          <v-timeline align="start" density="compact" class="ms-6">
-            <v-timeline-item v-for="item in items" size="x-small" :key="item.title">
-              <div class="d-flex">
-                <strong class="me-4">{{ item.title }}</strong>
-                <div v-if="'texts' in item">
-                  <span v-for="text, index in item.texts" :key="text">
-                    {{ text }}
-                    <br v-if="index != item.texts.length - 1">
-                  </span>
-                </div>
-                <div v-else>
-                  {{ item.text }}
-                </div>
-              </div>
-            </v-timeline-item>
-          </v-timeline>
-        </v-card>
+      <TimelineCard title="経歴" :list="items" />
       </v-col>
     </v-row>
   </v-container>
 </template>
+
+<script setup>
+import TimelineCard from '@/components/TimelineCard.vue'
+</script>
 
 <script>
   export default {
