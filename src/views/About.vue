@@ -12,7 +12,7 @@
       <v-col
         cols="12" sm="10" md="10" lg="8" xl="6" xxl="6"
       >
-        <v-card>
+        <v-card title="経歴">
           <v-timeline align="start" density="compact" class="ms-6">
             <v-timeline-item v-for="item in items" size="x-small">
               <div class="d-flex">
