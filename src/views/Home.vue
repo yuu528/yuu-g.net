@@ -1,16 +1,32 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <div class="text-h2" align-content="center">Works</div>
+      <div class="text-h2" align-content="center">Contents</div>
     </v-row>
     <v-row>
-      <v-col cols="12" sm="6" md="4" lg="3" xl="3" xxl="2" v-for="work in works" :key="work.title">
+      <v-col cols="12" sm="6" md="4" lg="3" xl="3" xxl="2" v-for="content in contents" :key="content.title">
         <v-card
-          :title="work.title"
-          :text="work.text"
+          :title="content.title"
+          :text="content.text"
         >
           <v-card-actions>
-            <v-btn :href="work.href">{{ work.link }}</v-btn>
+            <v-btn :href="content.href">{{ content.link }}</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row justify="center">
+      <div class="text-h2" align-content="center">Links</div>
+    </v-row>
+    <v-row>
+      <v-col cols="12" sm="6" md="4" lg="3" xl="3" xxl="2" v-for="link in links" :key="link.title">
+        <v-card
+          :title="link.title"
+          :text="link.text"
+          :prepend-icon="link.icon"
+        >
+          <v-card-actions>
+            <v-btn :href="link.href">{{ link.link }}</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -21,43 +37,21 @@
 <script>
   export default {
     data: () => ({
-      works: [
+      contents: [
         {
           title: 'test',
           text: 'description',
           link: 'link',
           href: 'https://example.com'
-        },
+        }
+      ],
+      links: [
         {
-          title: 'test',
-          text: 'description',
-          link: 'link',
-          href: 'https://example.com'
-        },
-        {
-          title: 'test',
-          text: 'description',
-          link: 'link',
-          href: 'https://example.com'
-        },
-        {
-          title: 'test',
-          text: 'description',
-          link: 'link',
-          href: 'https://example.com'
-        },
-        {
-          title: 'test',
-          text: 'description',
-          link: 'link',
-          href: 'https://example.com'
-        },
-        {
-          title: 'test',
-          text: 'description',
-          link: 'link',
-          href: 'https://example.com'
-        },
+          title: 'Twitter',
+          text: '',
+          link: 'Visit',
+          href: 'https://twitter.com/you_yuu528'
+        }
       ]
     })
   }
