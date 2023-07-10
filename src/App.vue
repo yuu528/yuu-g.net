@@ -15,6 +15,12 @@
     <v-main>
       <router-view />
     </v-main>
+
+    <v-footer>
+      <v-row justify="center">
+        (C) {{ new Date().getFullYear() }} Yuu528
+      </v-row>
+    </v-footer>
   </v-app>
 </template>
 
