@@ -11,14 +11,36 @@ import CardList from '@/components/CardList.vue'
 export default {
   data: () => ({
     contents: [
-      /*
       {
-        title: 'test',
-        text: 'description',
-        link: 'link',
-        href: 'https://example.com'
-      }
-      */
+        title: '艦これブラウザ',
+        text: 'AndroidでもPCと同じUI・画質・音質で遊べる艦これブラウザ',
+        link: 'Visit',
+        href: 'https://old.yuu-g.net/kcbrowser/'
+      },
+      {
+        title: 'PokeMikuConverter',
+        text: 'ポケミクに64文字以上の歌詞を入力できるアプリ(現在ひらがな変換利用不可)',
+        link: 'Visit',
+        href: 'https://old.yuu-g.net/pokemiku/conv/'
+      },
+      {
+        title: 'AlpFast',
+        text: 'アルファベットA～Zを打つタイムアタック',
+        link: 'Visit',
+        href: 'https://old.yuu-g.net/alpfast/'
+      },
+      {
+        title: 'OBCSim',
+        text: '某会社のバス運賃表示器を再現するシミュレータ',
+        link: 'Visit',
+        href: 'https://old.yuu-g.net/obcsim/'
+      },
+      {
+        title: '旧ウェブサイト',
+        text: 'リニューアル前のウェブサイトをアーカイブとして公開(一部リンク切れあり)',
+        link: 'Visit',
+        href: 'https://old.yuu-g.net'
+      },
     ],
     links: [
       {
