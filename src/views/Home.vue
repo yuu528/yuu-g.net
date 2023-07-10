@@ -24,16 +24,21 @@ export default {
       {
         icon: 'mdi-twitter',
         title: 'Twitter',
-        text: 'メインのSNS',
         link: 'Visit',
         href: 'https://twitter.com/you_yuu528'
+      },
+      {
+        icon: 'mdi-github',
+        title: 'GitHub',
+        link: 'Visit',
+        href: 'https://github.com/yuu528'
       },
       {
         title: 'Scrapbox',
         text: '自分用のちょっとしたメモなど',
         link: 'Visit',
         href: 'https://scrapbox.io/yuu-g/'
-      }
+      },
     ]
   })
 }
