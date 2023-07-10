@@ -14,10 +14,18 @@
       >
         <v-card title="経歴">
           <v-timeline align="start" density="compact" class="ms-6">
-            <v-timeline-item v-for="item in items" size="x-small">
+            <v-timeline-item v-for="item in items" size="x-small" :key="item.title">
               <div class="d-flex">
                 <strong class="me-4">{{ item.title }}</strong>
-                <div>{{ item.text }}</div>
+                <div v-if="'texts' in item">
+                  <span v-for="text, index in item.texts" :key="text">
+                    {{ text }}
+                    <br v-if="index != item.texts.length - 1">
+                  </span>
+                </div>
+                <div v-else>
+                  {{ item.text }}
+                </div>
               </div>
             </v-timeline-item>
           </v-timeline>
@@ -45,15 +53,11 @@
         },
         {
           title: '高校1年',
-          text: 'Arduinoに入門。チームで自律ロボットの制作を開始(プログラミング担当)'
-        },
-        {
-          title: '高校1年',
-          text: '文化祭にてイルミネーション回路を設計、設置'
-        },
-        {
-          title: '高校1年',
-          text: 'ロボット大会に出場'
+          texts: [
+            'Arduinoに入門。チームで自律ロボットの制作を開始(プログラミング担当)',
+            '文化祭にてイルミネーション回路を設計、設置',
+            '県高校生ロボット大会に出場'
+          ],
         },
         {
           title: '高校2年',
