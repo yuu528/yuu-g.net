@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar flat>
+    <v-app-bar color="primary" flat>
       <v-app-bar-title>Yuu-G.net</v-app-bar-title>
 
       <template v-slot:extension>
