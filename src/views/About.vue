@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row justify="center">
+    <v-row class="mt-2" justify="center">
       <v-avatar size="150" variant="elevated">
         <v-img alt="Yuu528 Avatar" src="@/assets/icon.png"></v-img>
       </v-avatar>
