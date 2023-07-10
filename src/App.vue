@@ -13,9 +13,11 @@
     </v-app-bar>
 
     <v-main>
-      <keep-alive>
-        <router-view />
-      </keep-alive>
+      <router-view v-slot="{ Component }">
+        <keep-alive>
+          <component :is="Component" :key="$route.fullPath"></component>
+        </keep-alive>
+      </router-view>
     </v-main>
 
     <v-footer>
