@@ -40,7 +40,7 @@
           text: 'Minecraftサーバ運営、PHPを学ぶ'
         },
         {
-          title: '中学1年',
+          title: '中学2年',
           text: 'JavaScriptなどを学ぶ。自宅Webサーバのホスティング開始'
         },
         {
