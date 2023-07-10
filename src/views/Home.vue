@@ -47,7 +47,6 @@
       ],
       links: [
         {
-          icon: 'fa-twitter',
           title: 'Twitter',
           text: '',
           link: 'Visit',
