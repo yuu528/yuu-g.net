@@ -8,7 +8,10 @@ const routes = [
         path: '/',
         name: 'Home',
         component: () => import(/* webpackChunkName: "Home" */ '@/views/Home.vue'),
-        meta: {title: "Home"}
+        meta: {
+          title: "Home",
+          desc: "Yuu-G.netは自作ツールなどを公開している個人サイトです。"
+        }
       },
       {
         path: '/about',
@@ -26,7 +29,14 @@ const router = createRouter({
 })
 
 router.afterEach(to => {
-  document.title = to.meta.title + " | Yuu-G.net"
+  if('meta' in to) {
+    if('title' in to.meta) {
+      document.title = to.meta.title + " | Yuu-G.net"
+    }
+    if('desc' in to.meta) {
+      document.querySelector('meta[name="description"]').setAttribute('content', to.meta.desc)
+    }
+  }
 })
 
 export default router
