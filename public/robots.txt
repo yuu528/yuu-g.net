@@ -3,3 +3,5 @@ Disallow: /
 Allow: /$
 Allow: /index.html
 Allow: /sitemap.xml
+
+Sitemap: https://yuu-g.net/sitemap.xml
