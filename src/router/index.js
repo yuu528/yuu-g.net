@@ -1,5 +1,5 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
   {
@@ -19,6 +19,12 @@ const routes = [
         component: () => import(/* webpackChunkName: "About" */ '@/views/About.vue'),
         meta: {title: "About"}
       },
+      {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: () => import(/* webpackChunkName: "NotFound" */ '@/views/NotFound.vue'),
+        meta: {title: "404 NotFound"}
+      }
     ],
   },
 ]
@@ -29,11 +35,11 @@ const router = createRouter({
 })
 
 router.afterEach(to => {
-  if('meta' in to) {
-    if('title' in to.meta) {
+  if ('meta' in to) {
+    if ('title' in to.meta) {
       document.title = to.meta.title + " | Yuu-G.net"
     }
-    if('desc' in to.meta) {
+    if ('desc' in to.meta) {
       document.querySelector('meta[name="description"]').setAttribute('content', to.meta.desc)
     }
   }
