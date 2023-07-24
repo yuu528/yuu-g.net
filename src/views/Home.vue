@@ -12,6 +12,12 @@ export default {
   data: () => ({
     contents: [
       {
+        title: 'EightRPN',
+        text: 'オーバーフローのないRPN電卓アプリ',
+        link: '開発中',
+        href: ''
+      },
+      {
         title: '艦これブラウザ',
         text: 'AndroidでもPCと同じUI・画質・音質で遊べる艦これブラウザ',
         link: 'Visit',
