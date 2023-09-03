@@ -18,6 +18,18 @@ export default {
         href: ''
       },
       {
+        title: 'improve_gakujo.user.js',
+        text: '静岡大学学務情報システムの改善UserJS(自分用)',
+        link: 'Visit',
+        href: 'https://gist.github.com/yuu528/529046d3dcead488a4ea05e2a7a7ff48'
+      },
+      {
+        title: 'ddg-googlebtn.user.js',
+        text: 'DuckDuckGoにGoogle検索ボタンを追加UserJS',
+        link: 'Visit',
+        href: 'https://gist.github.com/yuu528/bce27d799f3047a13d7766e19b207ada'
+      },
+      {
         title: '艦これブラウザ',
         text: 'AndroidでもPCと同じUI・画質・音質で遊べる艦これブラウザ',
         link: 'Visit',
