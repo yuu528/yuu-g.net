@@ -27,19 +27,19 @@ import TimelineCard from '@/components/TimelineCard.vue'
     data: () => ({
       items: [
         {
-          title: '小学校高学年',
+          title: '',
           text: 'BASICでプログラミングに入門'
         },
         {
-          title: '小学校高学年～中学2年',
+          title: '',
           text: 'Minecraftサーバ運営、PHPを学ぶ'
         },
         {
-          title: '中学2年',
-          text: 'JavaScriptなどを学ぶ。自宅Webサーバのホスティング開始'
+          title: '',
+          text: 'JavaScriptなどを学ぶ。自宅Webサーバのホスティング'
         },
         {
-          title: '高校1年',
+          title: '',
           texts: [
             'Arduinoに入門。チームで自律ロボットの制作を開始(プログラミング担当)',
             '文化祭にてイルミネーション回路を設計、設置',
@@ -47,15 +47,15 @@ import TimelineCard from '@/components/TimelineCard.vue'
           ],
         },
         {
-          title: '高校2年',
+          title: '',
           text: '画像認識ロボットを作成、大会に出場'
         },
         {
-          title: '高校3年',
+          title: '',
           text: 'モータドライバ設計・発注とプログラミング担当としてロボットを制作'
         },
         {
-          title: '大学入学',
+          title: '',
           text: '国立大学へ入学'
         },
       ]
