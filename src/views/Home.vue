@@ -1,6 +1,18 @@
 <template>
-  <CardList title="コンテンツ" :list="contents" />
-  <CardList title="リンク" :list="links" />
+  <v-container class="my-4">
+    <v-row>
+      <div class="text-h4">コンテンツ</div>
+    </v-row>
+    <CardList title="App" :list="ctsApp" />
+    <CardList title="WebApp" :list="ctsWebApp" />
+    <CardList title="UserJS" :list="ctsUserJs" />
+  </v-container>
+  <v-container>
+    <v-row>
+      <div class="text-h4">リンク</div>
+    </v-row>
+    <CardList title="" :list="links" />
+  </v-container>
 </template>
 
 <script setup>
@@ -10,24 +22,12 @@ import CardList from '@/components/CardList.vue'
 <script>
 export default {
   data: () => ({
-    contents: [
+    ctsApp: [
       {
         title: 'EightRPN',
         text: 'オーバーフローのないRPN電卓アプリ',
         link: '開発中',
-        href: ''
-      },
-      {
-        title: 'improve_gakujo.user.js',
-        text: '静岡大学学務情報システムの改善UserJS(自分用)',
-        link: 'Visit',
-        href: 'https://gist.github.com/yuu528/529046d3dcead488a4ea05e2a7a7ff48'
-      },
-      {
-        title: 'ddg-googlebtn.user.js',
-        text: 'DuckDuckGoにGoogle検索ボタンを追加UserJS',
-        link: 'Visit',
-        href: 'https://gist.github.com/yuu528/bce27d799f3047a13d7766e19b207ada'
+        href: 'https://github.com/yuu528/EightRPN/'
       },
       {
         title: '艦これブラウザ',
@@ -35,6 +35,8 @@ export default {
         link: 'Visit',
         href: 'https://old.yuu-g.net/kcbrowser/'
       },
+    ],
+    ctsWebApp: [
       {
         title: 'PokeMikuConverter',
         text: 'ポケミクに64文字以上の歌詞を入力できるアプリ(現在ひらがな変換利用不可)',
@@ -53,11 +55,19 @@ export default {
         link: 'Visit',
         href: 'https://old.yuu-g.net/obcsim/'
       },
+    ],
+    ctsUserJs: [
       {
-        title: '旧ウェブサイト',
-        text: 'リニューアル前のウェブサイトをアーカイブとして公開(一部リンク切れあり)',
+        title: 'improve_gakujo.user.js',
+        text: '静岡大学学務情報システムの改善UserJS(自分用)',
         link: 'Visit',
-        href: 'https://old.yuu-g.net'
+        href: 'https://gist.github.com/yuu528/529046d3dcead488a4ea05e2a7a7ff48'
+      },
+      {
+        title: 'ddg-googlebtn.user.js',
+        text: 'DuckDuckGoにGoogle検索ボタンを追加UserJS',
+        link: 'Visit',
+        href: 'https://gist.github.com/yuu528/bce27d799f3047a13d7766e19b207ada'
       },
     ],
     links: [
@@ -79,7 +89,23 @@ export default {
         link: 'Visit',
         href: 'https://scrapbox.io/yuu-g/'
       },
+      {
+        title: '旧ウェブサイト',
+        text: 'リニューアル前のウェブサイトをアーカイブとして公開(一部リンク切れあり)',
+        link: 'Visit',
+        href: 'https://old.yuu-g.net'
+      },
     ]
   })
 }
 </script>
+
+
+
+
+
+
+
+
+
+
