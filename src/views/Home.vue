@@ -24,10 +24,10 @@ export default {
   data: () => ({
     ctsApp: [
       {
-        title: 'EightRPN',
-        text: 'オーバーフローのないRPN電卓アプリ',
-        link: '開発中',
-        href: 'https://github.com/yuu528/EightRPN/'
+        title: 'GakujoViewer',
+        text: '静岡大学学務情報システムの非公式クライアント',
+        link: 'Visit',
+        href: 'https://github.com/SU-ProgC-Marionnette/GakujoViewer'
       },
       {
         title: '艦これブラウザ',
@@ -61,7 +61,7 @@ export default {
         title: 'improve_gakujo.user.js',
         text: '静岡大学学務情報システムの改善UserJS(自分用)',
         link: 'Visit',
-        href: 'https://gist.github.com/yuu528/529046d3dcead488a4ea05e2a7a7ff48'
+        href: 'https://github.com/yuu528/ImproveGakujo'
       },
       {
         title: 'ddg-googlebtn.user.js',
@@ -99,13 +99,3 @@ export default {
   })
 }
 </script>
-
-
-
-
-
-
-
-
-
-
