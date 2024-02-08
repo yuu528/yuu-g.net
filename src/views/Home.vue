@@ -27,13 +27,15 @@ export default {
         title: 'GakujoViewer',
         text: '静岡大学学務情報システムの非公式クライアント',
         link: 'Visit',
-        href: 'https://github.com/SU-ProgC-Marionnette/GakujoViewer'
+        href: 'https://github.com/SU-ProgC-Marionnette/GakujoViewer',
+        targets: ['mdi-microsoft-windows', 'mdi-linux']
       },
       {
         title: '艦これブラウザ',
         text: 'AndroidでもPCと同じUI・画質・音質で遊べる艦これブラウザ',
         link: 'Visit',
-        href: 'https://old.yuu-g.net/kcbrowser/'
+        href: 'https://old.yuu-g.net/kcbrowser/',
+        targets: ['mdi-android']
       },
     ],
     ctsWebApp: [

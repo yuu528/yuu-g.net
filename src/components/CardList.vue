@@ -15,6 +15,11 @@
         >
           <v-card-actions>
             <v-btn :href="content.href">{{ content.link }}</v-btn>
+            <v-spacer></v-spacer>
+            <div v-if="content.targets">
+              <v-icon v-for="target in content.targets" :icon="target">
+              </v-icon>
+            </div>
           </v-card-actions>
         </v-card>
       </v-col>
