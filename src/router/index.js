@@ -14,6 +14,15 @@ const routes = [
         }
       },
       {
+        path: '/brainfuxk',
+        name: 'BrainFuxk',
+        component: () => import(/* webpackChunkName: "BrainFuxk" */ '@/views/BrainFuxk.vue'),
+        meta: {
+          title: "BrainFu*k Interpreter",
+          desc: "Web BrainFuxkインタプリタ"
+        }
+      },
+      {
         path: '/about',
         name: 'About',
         component: () => import(/* webpackChunkName: "About" */ '@/views/About.vue'),

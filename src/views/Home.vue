@@ -40,6 +40,12 @@ export default {
     ],
     ctsWebApp: [
       {
+        title: 'BrainFu*k Interpreter',
+        text: 'BrainFu*k系言語のWebインタプリタ',
+        link: 'Visit',
+        to: '/brainfuxk'
+      },
+      {
         title: 'PokeMikuConverter',
         text: 'ポケミクに64文字以上の歌詞を入力できるアプリ(現在ひらがな変換利用不可)',
         link: 'Visit',

@@ -59,8 +59,6 @@ const pages = [
   }
 ];
 
-console.log(router.currentRoute);
-
 const inTabPage = computed(() =>
   pages.some(page =>
     page.to === router.currentRoute.value.path

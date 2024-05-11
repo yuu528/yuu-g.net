@@ -14,7 +14,18 @@
           :prepend-icon="content.icon"
         >
           <v-card-actions>
-            <v-btn :href="content.href">{{ content.link }}</v-btn>
+            <v-btn
+              v-if="'href' in content"
+              :href="content.href"
+            >
+              {{ content.link }}
+            </v-btn>
+            <v-btn
+              v-if="'to' in content"
+              :to="content.to"
+            >
+              {{ content.link }}
+            </v-btn>
             <v-spacer></v-spacer>
             <div v-if="content.targets">
               <v-icon v-for="target in content.targets" :icon="target">
