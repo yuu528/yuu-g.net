@@ -7,7 +7,6 @@
           name="code"
           v-model="codeModel"
           clearable
-          @update:modelValue="updateCode()"
         ></v-textarea>
 
         <v-container>
@@ -43,7 +42,7 @@
                   v-model="inputModel"
                   density="compact"
                   maxlength="1"
-                  :disabled="inputDisabled"
+                  :disabled="currentState !== State.WAITING_INPUT"
                   @update:modelValue="updateInput()"
                   @keydown.enter="machineInput()"
                 ></v-text-field>
@@ -83,30 +82,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick } from 'vue';
+import { ref, computed, watch, nextTick } from 'vue';
 
 import { BFMachine } from '@/scripts/brainfuxk/BFMachine';
 import { Status } from '@/scripts/brainfuxk/BFStatus';
 
+// Form
 const codeModel = ref('');
 const inputModel = ref('');
 const autoEnter = ref(false);
 const outputModel = ref('');
 
-const statusMsg = ref('Halted');
-const statusIcon = ref('mdi-stop');
-
-const inputDisabled = ref(true);
-
+// Machine
 const machine = new BFMachine();
 
 const machineMem = computed(() => machine.mem);
+
+// Page
+const enum State {
+  HALTED,
+  RUNNING,
+  WAITING_INPUT
+}
+
+const currentState = ref(State.HALTED);
+
+const statusMsg = computed(() => ({
+  [State.HALTED]: 'Halted',
+  [State.RUNNING]: 'Running',
+  [State.WAITING_INPUT]: 'Waiting for input'
+}[currentState.value]));
+
+const statusIcon = computed(() => ({
+  [State.HALTED]: 'mdi-stop',
+  [State.RUNNING]: 'mdi-play',
+  [State.WAITING_INPUT]: 'mdi-pause'
+}[currentState.value]));
 
 const btns = ref([
   {
     icon: 'mdi-play',
     text: 'Run',
     fn: () => {
+      // Load code
       machine.reset();
 
       let result = machine.load(codeModel.value);
@@ -118,21 +136,37 @@ const btns = ref([
         outputModel.value = 'Error: ' + result.error.toString();
       }
     },
-    disabled: true
+    disabled: computed(() =>
+      currentState.value !== State.HALTED || codeModel.value === ''
+    )
   },
   {
     icon: 'mdi-stop',
     text: 'Halt',
     fn: () => {
-      machineHalt();
+      currentState.value = State.HALTED;
     },
-    disabled: false
+    disabled: computed(() =>
+      currentState.value === State.HALTED
+    )
   }
 ]);
 
-function updateCode() {
-  btns.value[0].disabled = codeModel.value === '';
-}
+// Watchers
+watch(currentState, (newState, oldState) => {
+  switch(newState) {
+    case State.HALTED:
+    case State.RUNNING:
+      inputModel.value = '';
+      break;
+
+    case State.WAITING_INPUT:
+      nextTick(() => {
+        document.getElementById('input-field').focus();
+      });
+      break;
+  }
+})
 
 function updateInput() {
   if(autoEnter.value) {
@@ -144,32 +178,9 @@ function updateAutoEnter() {
   inputModel.value = '';
 }
 
-function enableInput() {
-  inputDisabled.value = false;
-
-  nextTick(() => {
-    document.getElementById('input-field').focus();
-  });
-}
-
-function disableInput() {
-  inputDisabled.value = true;
-  inputModel.value = '';
-}
-
 function machineInput() {
   machine.store(inputModel.value);
-
-  disableInput();
-
   setTimeout(() => autoStep(), 0);
-}
-
-function machineHalt() {
-  disableInput();
-
-  statusMsg.value = 'Halted';
-  statusIcon.value = 'mdi-stop';
 }
 
 function autoStep() {
@@ -179,22 +190,17 @@ function autoStep() {
     case Status.RUNNING:
       outputModel.value += status.stdout;
 
-      statusMsg.value = 'Running';
-      statusIcon.value = 'mdi-play';
-
+      currentState.value = State.RUNNING;
       setTimeout(() => autoStep(), 0);
       break;
 
     case Status.HALTED:
       outputModel.value += status.stdout;
-      machineHalt();
+      currentState.value = State.HALTED;
       break;
 
     case Status.WAITING_INPUT:
-      statusMsg.value = 'Waiting for input';
-      statusIcon.value = 'mdi-pause';
-
-      enableInput();
+      currentState.value = State.WAITING_INPUT;
       break;
   }
 }
