@@ -312,6 +312,42 @@ const markPresets = [
     markSpec: new MarkSpec(MarkSpec.PRESETS.Ook)
   },
   {
+    name: 'Nyaruko',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.Nyaruko)
+  },
+  {
+    name: 'Kemono',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.Kemono)
+  },
+  {
+    name: 'Jojo',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.Jojo)
+  },
+  {
+    name: 'BF-BASIC\'n',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.BFBASICn)
+  },
+  {
+    name: 'BrainHakke',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.BrainHakke)
+  },
+  {
+    name: 'Gochiusa',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.Gochiusa)
+  },
+  {
+    name: 'NekoMimiFu*k',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.NekoMimi)
+  },
+  {
+    name: 'nico-lang',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.YazawaNico)
+  },
+  {
+    name: 'EiMun!',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.Eimun)
+  },
+  {
     name: 'Custom'
   }
 ];
