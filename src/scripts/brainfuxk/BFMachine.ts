@@ -11,30 +11,30 @@ export class BFMachine {
 
   private loopStack: number[];
 
-  private mark: MarkSpec;
+  private _mark: MarkSpec;
 
   constructor() {
-    this.mark = new MarkSpec();
+    this._mark = new MarkSpec();
 
     this.reset();
   }
 
   public setMark(mark: MarkSpec) {
-    this.mark = mark;
+    this._mark = mark;
   }
 
   public load(prog: string): (BFError | boolean) {
     // Covert mark char to number
     let markToNum = {};
 
-    Object.entries(this.mark).forEach(([op, mark]) => {
+    Object.entries(this._mark).forEach(([op, mark]) => {
       markToNum[mark] = MarkSpec.enum[op];
     });
 
     // create regex to match /^\s*({mark})(.*)$/s
     const regExp = new RegExp(
       '^\s*(' +
-      Object.values(this.mark)
+      Object.values(this._mark)
         .map(mark => mark.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
         .join('|') +
       ')(.*)$',
@@ -179,5 +179,9 @@ export class BFMachine {
 
   get ptr(): number {
     return this._ptr;
+  }
+
+  get mark(): MarkSpec {
+    return this._mark;
   }
 }

@@ -18,4 +18,12 @@ export class MarkSpec {
   input = ',';
   loopStart = '[';
   loopEnd = ']';
+
+  constructor(spec?: {key: string, mark: string}) {
+    if(spec !== undefined) {
+      Object.entries(spec).forEach(([key, mark]) => {
+        this[key] = mark;
+      });
+    }
+  }
 }

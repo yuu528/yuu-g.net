@@ -11,7 +11,6 @@
         ></v-textarea>
       </v-col>
 
-      <!-- Output -->
       <v-col cols="12" lg="6">
         <v-container>
           <!-- Output -->
@@ -28,8 +27,57 @@
             </v-col>
           </v-row>
 
+          <!-- Mark Config -->
+          <v-row no-gutters>
+            <v-col>
+              <v-expansion-panels>
+                <v-expansion-panel
+                  title="Instruction Settings"
+                >
+                  <v-expansion-panel-text>
+                    <v-container>
+                      <v-row no-gutters>
+                        <v-select
+                          label="Instruction Preset"
+                          :items="markPresets.map(p => p.name)"
+                          v-model="selectedPreset"
+                        ></v-select>
+                      </v-row>
+
+                      <v-row no-gutters>
+                        <v-col
+                          v-for="setting in markSettings"
+                          cols="3"
+                        >
+                          <v-text-field
+                            :label="setting.label"
+                            density="compact"
+                            class="mx-1"
+                            :disabled="currentState !== State.HALTED || selectedPreset !== 'Custom'"
+                            v-model="setting.model"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+
+                      <v-row no-gutters>
+                        <v-col>
+                          <v-btn
+                            color="primary"
+                            :disabled="currentState !== State.HALTED || selectedPreset !== 'Custom'"
+                            @click="updateMarks()"
+                            block
+                          >Update Marks</v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-expansion-panel-text>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-col>
+          </v-row>
+
           <!-- Memory View Config -->
-          <v-row>
+          <v-row class="mt-4" no-gutters>
             <v-col
               v-for="setting in memViewSettings"
               cols="6"
@@ -37,13 +85,15 @@
               <v-select
                 :label="setting.label"
                 :items="setting.items"
+                density="compact"
+                class="mx-1"
                 v-model="setting.model"
               ></v-select>
             </v-col>
           </v-row>
 
           <!-- Memory View -->
-          <v-row v-if="machineMem.length > 0">
+          <v-row v-if="machineMem.length > 0" no-gutters>
             <v-col>
               <v-sheet
                 class="d-flex flex-wrap"
@@ -149,6 +199,7 @@ import { ref, computed, reactive, watch, nextTick } from 'vue';
 
 import { BFMachine } from '@/scripts/brainfuxk/BFMachine';
 import { BFError } from '@/scripts/brainfuxk/BFError';
+import { MarkSpec } from '@/scripts/brainfuxk/MarkSpec';
 import { Status } from '@/scripts/brainfuxk/BFStatus';
 
 import { AsyncCall } from '@/scripts/brainfuxk/AsyncCall';
@@ -210,8 +261,67 @@ const memViewSettings = ref([
   },
 ]);
 
-// Controls
+const markSettings = ref([
+  {
+    label: 'Inc. Ptr.',
+    model: ref('')
+  },
+  {
+    label: 'Dec. Ptr.',
+    model: ref('')
+  },
+  {
+    label: 'Inc. Value',
+    model: ref('')
+  },
+  {
+    label: 'Dec. Value',
+    model: ref('')
+  },
+  {
+    label: 'Output',
+    model: ref('')
+  },
+  {
+    label: 'Input',
+    model: ref('')
+  },
+  {
+    label: 'Loop Start',
+    model: ref('')
+  },
+  {
+    label: 'Loop End',
+    model: ref('')
+  },
+]);
 
+const markPresets = [
+  {
+    name: 'Brainfuxk',
+    markSpec: new MarkSpec()
+  },
+  {
+    name: 'Ook!',
+    markSpec: new MarkSpec({
+      inc: 'Ook. Ook?',
+      dec: 'Ook? Ook.',
+      incVal: 'Ook. Ook.',
+      decVal: 'Ook! Ook!',
+      output: 'Ook! Ook.',
+      input: 'Ook. Ook!',
+      loopStart: 'Ook! Ook?',
+      loopEnd: 'Ook? Ook!'
+    })
+  },
+  {
+    name: 'Custom'
+  }
+];
+const selectedPreset = ref(markPresets[0].name);
+updateMarksFromMachine();
+
+// Controls
 /*
   Decision Table
 
@@ -322,7 +432,7 @@ const machineMem = computed({
         indexBase.prefix + index.toString(indexBase.base),
         memBase.prefix + mem.toString(memBase.base)
       ]
-    })
+    });
   },
   set(value) {
     machineMemRef.value = value;
@@ -360,6 +470,45 @@ watch(currentState, (newState, oldState) => {
   }
 });
 
+watch(selectedPreset, (newPreset, oldPreset) => {
+  updateMarksByPreset(newPreset);
+});
+
+function updateMarksFromMachine() {
+  [
+    'inc',
+    'dec',
+    'incVal',
+    'decVal',
+    'output',
+    'input',
+    'loopStart',
+    'loopEnd'
+  ].forEach((key, index) => {
+    markSettings.value[index].model = machine.mark[key];
+  });
+}
+
+function updateMarksByPreset(name: string) {
+  if(name === 'Custom') return;
+
+  machine.setMark(markPresets.find(preset => preset.name === name).markSpec);
+  updateMarksFromMachine();
+}
+
+function updateMarks() {
+  machine.setMark(new MarkSpec({
+    inc: markSettings.value[0].model,
+    dec: markSettings.value[1].model,
+    incVal: markSettings.value[2].model,
+    decVal: markSettings.value[3].model,
+    output: markSettings.value[4].model,
+    input: markSettings.value[5].model,
+    loopStart: markSettings.value[6].model,
+    loopEnd: markSettings.value[7].model
+  }));
+}
+
 function updateInput() {
   if(autoEnter.value) {
     machineInput();
@@ -393,7 +542,7 @@ function run(enableStep?: boolean) {
     stepping.value = enableStep || false;
     step();
   } else {
-    errorHandle(result.error);
+    errorHandle(result);
   }
 }
 
