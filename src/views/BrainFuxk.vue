@@ -221,8 +221,7 @@ const memViewSettings = ref([
           *       |    *     |   empty   | true  | true  | true  |  *
         HALTED    |    *     |    *      | false | false | true  | true
        RUNNING    |  false   |    *      | true  | true  | false | false
-       RUNNING    |   true   |    *      | false | false | true  | false
-    WAITING_INPUT |    *     |    *      | false | false | true  | false
+    WAITING_INPUT |    *     |    *      | true  | true  | true  | false
         PAUSED    |    *     |    *      | false | false | true  | false
 */
 const btns = ref([
@@ -239,6 +238,7 @@ const btns = ref([
     },
     disabled: computed(() =>
       codeModel.value === ''
+        || currentState.value === State.WAITING_INPUT
         || (currentState.value === State.RUNNING && !stepping.value)
     ),
     cols: 3
@@ -256,6 +256,7 @@ const btns = ref([
     },
     disabled: computed(() =>
       codeModel.value === ''
+        || currentState.value === State.WAITING_INPUT
         || (currentState.value === State.RUNNING && !stepping.value)
     ),
     cols: 3
@@ -369,7 +370,7 @@ function updateAutoEnter() {
 
 function machineInput() {
   machine.store(inputModel.value);
-  AsyncCall.asyncCall(step);
+  step();
 }
 
 function errorHandle(error: BFError) {
