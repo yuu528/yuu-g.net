@@ -28,14 +28,14 @@ export class BFMachine {
     let markToNum = {};
 
     Object.entries(this._mark).forEach(([op, mark]) => {
-      markToNum[mark] = MarkSpec.enum[op];
+      markToNum[mark.replace(/\s/g, '')] = MarkSpec.enum[op];
     });
 
     // create regex to match /^\s*({mark})(.*)$/s
     const regExp = new RegExp(
       '^\s*(' +
       Object.values(this._mark)
-        .map(mark => mark.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+        .map(mark => mark.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s/g, ''))
         .sort((a, b) => b.length - a.length)
         .join('|') +
       ')(.*)$',
@@ -44,7 +44,7 @@ export class BFMachine {
 
     // Load program to memory
     let matched: RegExpMatchArray | null;
-    let remain = prog;
+    let remain = prog.replace(/\s/g, '');
     do {
       matched = remain.match(regExp);
 
