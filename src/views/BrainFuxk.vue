@@ -175,6 +175,8 @@ const btns = ref([
 
       if(result === true) {
         outputModel.value = '';
+
+        disableNextStep.value = false;
         autoStep();
       } else {
         outputModel.value = 'Error: ' + result.error.toString();
@@ -188,6 +190,7 @@ const btns = ref([
     icon: 'mdi-stop',
     text: 'Halt',
     fn: () => {
+      disableNextStep.value = true;
       currentState.value = State.HALTED;
     },
     disabled: computed(() =>
@@ -262,6 +265,8 @@ const enum State {
 
 const currentState = ref(State.HALTED);
 
+const disableNextStep = ref(false);
+
 const statusMsg = computed(() => ({
   [State.HALTED]: 'Halted',
   [State.RUNNING]: 'Running',
@@ -306,6 +311,11 @@ function machineInput() {
 }
 
 function autoStep() {
+  if(disableNextStep.value) {
+    disableNextStep.value = false;
+    return;
+  }
+
   let status = machine.step();
   machineMem.value = machine.mem;
   machinePtrRef.value = machine.ptr;
