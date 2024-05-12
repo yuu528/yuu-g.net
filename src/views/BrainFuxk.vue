@@ -309,16 +309,7 @@ const markPresets = [
   },
   {
     name: 'Ook!',
-    markSpec: new MarkSpec({
-      inc: 'Ook. Ook?',
-      dec: 'Ook? Ook.',
-      incVal: 'Ook. Ook.',
-      decVal: 'Ook! Ook!',
-      output: 'Ook! Ook.',
-      input: 'Ook. Ook!',
-      loopStart: 'Ook! Ook?',
-      loopEnd: 'Ook? Ook!'
-    })
+    markSpec: new MarkSpec(MarkSpec.PRESETS.Ook)
   },
   {
     name: 'Custom'
