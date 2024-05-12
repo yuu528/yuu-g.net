@@ -71,6 +71,10 @@ export class BFMachine {
   }
 
   public step(): BFStatus {
+    if(this._progPtr >= this._progMem.length) {
+      return new BFStatus(Status.HALTED, '');
+    }
+
     const result = new BFStatus(Status.RUNNING, '');
 
     switch(this._progMem[this._progPtr]) {
@@ -153,10 +157,6 @@ export class BFMachine {
     }
 
     this._progPtr++;
-
-    if(this._progPtr >= this._progMem.length) {
-      result.id = Status.HALTED;
-    }
 
     return result;
   }

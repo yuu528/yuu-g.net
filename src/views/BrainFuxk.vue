@@ -347,10 +347,12 @@ watch(currentState, (newState, oldState) => {
   switch(newState) {
     case State.HALTED:
     case State.RUNNING:
+    case State.PAUSED:
       inputModel.value = '';
       break;
 
     case State.WAITING_INPUT:
+      inputModel.value = '';
       nextTick(() => {
         document.getElementById('input-field').focus();
       });
@@ -403,7 +405,7 @@ function step() {
 
   let status = machine.step();
   machineMem.value = machine.mem;
-  machinePtrRef.value = machine.ptr;
+  machinePtr.value = machine.ptr;
 
   if(status.error !== undefined) {
     errorHandle(status.error);
