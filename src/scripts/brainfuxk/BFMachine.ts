@@ -36,6 +36,7 @@ export class BFMachine {
       '^\s*(' +
       Object.values(this._mark)
         .map(mark => mark.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+        .sort((a, b) => b.length - a.length)
         .join('|') +
       ')(.*)$',
       's'
