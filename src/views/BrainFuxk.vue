@@ -9,8 +9,77 @@
           :disabled="currentState !== State.HALTED"
           clearable
         ></v-textarea>
+      </v-col>
 
+      <!-- Output -->
+      <v-col cols="12" lg="6">
         <v-container>
+          <!-- Output -->
+          <v-row>
+            <v-col>
+              <v-textarea
+                label="Output"
+                name="output"
+                v-model="outputModel"
+                variant="outlined"
+                auto-grow
+                readonly
+              ></v-textarea>
+            </v-col>
+          </v-row>
+
+          <!-- Memory View Config -->
+          <v-row>
+            <v-col
+              v-for="setting in memViewSettings"
+              cols="6"
+            >
+              <v-select
+                :label="setting.label"
+                :items="setting.items"
+                v-model="setting.model"
+              ></v-select>
+            </v-col>
+          </v-row>
+
+          <!-- Memory View -->
+          <v-row v-if="machineMemRef.length > 0">
+            <v-col>
+              <v-sheet
+                class="d-flex flex-wrap"
+                elevation="2"
+                rounded
+                style="width: fit-content;"
+              >
+                <v-sheet
+                  class="text-center"
+                >
+                  <span class="mx-2">
+                    Address
+                  </span>
+                  <v-divider></v-divider>
+                  <span class="mx-2">
+                    Value
+                  </span>
+                </v-sheet>
+                <v-divider vertical></v-divider>
+                <v-sheet
+                  v-for="(mem, index) in machineMem"
+                  class="text-center"
+                  :color="index === machinePtrRef ? 'red-lighten-4' : ''"
+                >
+                  <span class="mx-2">
+                    {{ mem[0] }}
+                  </span>
+                  <v-divider></v-divider>
+                  <span class="mx-2">
+                    {{ mem[1] }}
+                  </span>
+                </v-sheet>
+              </v-sheet>
+            </v-col>
+          </v-row>
+
           <!-- Controls -->
           <v-row>
             <v-col
@@ -69,71 +138,7 @@
               </v-sheet>
             </v-col>
           </v-row>
-
-          <!-- Memory View Config -->
-          <v-row>
-            <v-col
-              v-for="setting in memViewSettings"
-              cols="6"
-            >
-              <v-select
-                :label="setting.label"
-                :items="setting.items"
-                v-model="setting.model"
-              ></v-select>
-            </v-col>
-          </v-row>
-
-          <!-- Memory View -->
-          <v-row v-if="machineMemRef.length > 0">
-            <v-col>
-              <v-sheet
-                class="d-flex"
-                elevation="2"
-                rounded
-                style="width: fit-content;"
-              >
-                <v-sheet
-                  class="text-center"
-                >
-                  <span class="mx-2">
-                    Address
-                  </span>
-                  <v-divider></v-divider>
-                  <span class="mx-2">
-                    Value
-                  </span>
-                </v-sheet>
-                <v-divider vertical></v-divider>
-                <template v-for="(mem, index) in machineMem">
-                  <v-sheet
-                    class="text-center"
-                    :color="index === machinePtrRef ? 'red-lighten-4' : ''"
-                  >
-                    <span class="mx-2">
-                      {{ mem[0] }}
-                    </span>
-                    <v-divider></v-divider>
-                    <span class="mx-2">
-                      {{ mem[1] }}
-                    </span>
-                  </v-sheet>
-                  <v-divider vertical></v-divider>
-                </template>
-              </v-sheet>
-            </v-col>
-          </v-row>
         </v-container>
-      </v-col>
-      <v-col cols="12" lg="6">
-        <v-textarea
-          label="Output"
-          name="output"
-          v-model="outputModel"
-          variant="outlined"
-          auto-grow
-          readonly
-        ></v-textarea>
       </v-col>
     </v-row>
   </v-container>
@@ -143,6 +148,7 @@
 import { ref, computed, reactive, watch, nextTick } from 'vue';
 
 import { BFMachine } from '@/scripts/brainfuxk/BFMachine';
+import { BFError } from '@/scripts/brainfuxk/BFError';
 import { Status } from '@/scripts/brainfuxk/BFStatus';
 
 import { AsyncCall } from '@/scripts/brainfuxk/AsyncCall';
@@ -366,6 +372,10 @@ function machineInput() {
   AsyncCall.asyncCall(step);
 }
 
+function errorHandle(error: BFError) {
+  outputModel.value = 'Error: ' + error.error.toString();
+}
+
 function run(enableStep?: boolean) {
   // Load code
   machine.reset();
@@ -380,7 +390,7 @@ function run(enableStep?: boolean) {
     stepping.value = enableStep || false;
     step();
   } else {
-    outputModel.value = 'Error: ' + result.error.toString();
+    errorHandle(result.error);
   }
 }
 
@@ -393,6 +403,12 @@ function step() {
   let status = machine.step();
   machineMem.value = machine.mem;
   machinePtrRef.value = machine.ptr;
+
+  if(status.error !== undefined) {
+    errorHandle(status.error);
+    currentState.value = State.HALTED;
+    return;
+  }
 
   switch(status.id) {
     case Status.RUNNING:
