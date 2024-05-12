@@ -4,4 +4,6 @@ Allow: /$
 Allow: /index.html
 Allow: /sitemap.xml
 
+Allow: /brainfuxk
+
 Sitemap: https://yuu-g.net/sitemap.xml
