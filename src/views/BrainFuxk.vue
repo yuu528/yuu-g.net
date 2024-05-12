@@ -43,7 +43,7 @@
           </v-row>
 
           <!-- Memory View -->
-          <v-row v-if="machineMemRef.length > 0">
+          <v-row v-if="machineMem.length > 0">
             <v-col>
               <v-sheet
                 class="d-flex flex-wrap"
@@ -66,7 +66,7 @@
                 <v-sheet
                   v-for="(mem, index) in machineMem"
                   class="text-center"
-                  :color="index === machinePtrRef ? 'red-lighten-4' : ''"
+                  :color="index === machinePtr ? 'red-lighten-4' : ''"
                 >
                   <span class="mx-2">
                     {{ mem[0] }}
