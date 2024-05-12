@@ -138,6 +138,10 @@ import { ref, computed, reactive, watch, nextTick } from 'vue';
 import { BFMachine } from '@/scripts/brainfuxk/BFMachine';
 import { Status } from '@/scripts/brainfuxk/BFStatus';
 
+import { AsyncCall } from '@/scripts/brainfuxk/AsyncCall';
+
+AsyncCall.initialize();
+
 // Input
 const codeModel = ref('');
 const inputModel = ref('');
@@ -307,7 +311,7 @@ function updateAutoEnter() {
 
 function machineInput() {
   machine.store(inputModel.value);
-  setTimeout(() => autoStep(), 0);
+  AsyncCall.asyncCall(autoStep);
 }
 
 function autoStep() {
@@ -325,7 +329,7 @@ function autoStep() {
       outputModel.value += status.stdout;
 
       currentState.value = State.RUNNING;
-      setTimeout(() => autoStep(), 0);
+      AsyncCall.asyncCall(autoStep);
       break;
 
     case Status.HALTED:
