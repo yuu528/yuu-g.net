@@ -52,8 +52,8 @@ export class MarkSpec {
       loopEnd: 'わーい！'
     },
     Jojo: {
-      inc: 'スターフィンガー！',
-      dec: 'ロードローラーだ！',
+      inc: ['スターフィンガー！', 'やれやれだぜ'],
+      dec: ['ロードローラーだ！', '貧弱ゥ'],
       incVal: 'オラ',
       decVal: '無駄',
       output: 'ハーミットパープル',
@@ -70,6 +70,16 @@ export class MarkSpec {
       input: 'うすらの',
       loopStart: 'すてらの',
       loopEnd: 'なばびこーん'
+    },
+    Misa: {
+      inc: ['>', '→', '～', 'ー'],
+      dec: ['<', '←', '★', '☆'],
+      incVal: ['+', 'あ', 'ぁ', 'お', 'ぉ'],
+      decVal: ['-', 'っ', 'ッ'],
+      input: [',', '？'],
+      output: ['.', '！'],
+      loopStart: ['[','「', '『'],
+      loopEnd: [']', '」', '』']
     },
     BrainHakke: {
       inc: '☰',
@@ -123,16 +133,16 @@ export class MarkSpec {
     }
   };
 
-  public inc: string;
-  public dec: string;
-  public incVal: string;
-  public decVal: string;
-  public output: string;
-  public input: string;
-  public loopStart: string;
-  public loopEnd: string;
+  public inc: string | string[];
+  public dec: string | string[];
+  public incVal: string | string[];
+  public decVal: string | string[];
+  public output: string | string[];
+  public input: string | string[];
+  public loopStart: string | string[];
+  public loopEnd: string | string[];
 
-  constructor(spec?: {key: string, mark: string}) {
+  constructor(spec?: {key: string, mark: string | string[]}) {
     if(spec !== undefined) {
       Object.entries(spec).forEach(([key, mark]) => {
         this[key] = mark;

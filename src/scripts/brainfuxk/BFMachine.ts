@@ -28,17 +28,27 @@ export class BFMachine {
     let markToNum = {};
 
     Object.entries(this._mark).forEach(([op, mark]) => {
-      markToNum[mark.replace(/\s/g, '')] = MarkSpec.enum[op];
+      if(Array.isArray(mark)) {
+        mark.forEach(mark => markToNum[mark.replace(/\s/g, '')] = MarkSpec.enum[op]);
+      } else {
+        markToNum[mark.replace(/\s/g, '')] = MarkSpec.enum[op];
+      }
     });
 
     // create regex to match /^\s*({mark})(.*)$/s
     const regExp = new RegExp(
       '^\s*(' +
       Object.values(this._mark)
-        .map(mark => mark.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s/g, ''))
-        .sort((a, b) => b.length - a.length)
-        .join('|') +
-      ')(.*)$',
+        .map(mark => {
+            if(Array.isArray(mark)) {
+              return mark.map(mark => mark.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s/g, '')).join('|');
+            }
+
+            return mark.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s/g, '')
+          })
+          .sort((a, b) => b.length - a.length)
+          .join('|') +
+        ')(.*)$',
       's'
     );
 

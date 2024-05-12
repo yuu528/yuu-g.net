@@ -328,6 +328,10 @@ const markPresets = [
     markSpec: new MarkSpec(MarkSpec.PRESETS.BFBASICn)
   },
   {
+    name: 'Misa',
+    markSpec: new MarkSpec(MarkSpec.PRESETS.Misa)
+  },
+  {
     name: 'BrainHakke',
     markSpec: new MarkSpec(MarkSpec.PRESETS.BrainHakke)
   },
