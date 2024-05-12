@@ -6,6 +6,7 @@
           label="Code"
           name="code"
           v-model="codeModel"
+          :disabled="currentState !== State.HALTED"
           clearable
         ></v-textarea>
 
@@ -65,6 +66,56 @@
               </v-sheet>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col
+              v-for="setting in memViewSettings"
+              cols="6"
+            >
+              <v-select
+                :label="setting.label"
+                :items="setting.items"
+                v-model="setting.model"
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row v-if="machineMemRef.length > 0">
+            <v-col>
+              <v-sheet
+                class="d-flex"
+                elevation="2"
+                rounded
+                style="width: fit-content;"
+              >
+                <v-sheet
+                  class="text-center"
+                >
+                  <span class="mx-2">
+                    Address
+                  </span>
+                  <v-divider></v-divider>
+                  <span class="mx-2">
+                    Value
+                  </span>
+                </v-sheet>
+                <v-divider vertical></v-divider>
+                <template v-for="(mem, index) in machineMem">
+                  <v-sheet
+                    class="text-center"
+                    :color="index === machinePtrRef ? 'red-lighten-4' : ''"
+                  >
+                    <span class="mx-2">
+                      {{ mem[0] }}
+                    </span>
+                    <v-divider></v-divider>
+                    <span class="mx-2">
+                      {{ mem[1] }}
+                    </span>
+                  </v-sheet>
+                  <v-divider vertical></v-divider>
+                </template>
+              </v-sheet>
+            </v-col>
+          </v-row>
         </v-container>
       </v-col>
       <v-col cols="12" lg="6">
@@ -82,43 +133,36 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue';
+import { ref, computed, reactive, watch, nextTick } from 'vue';
 
 import { BFMachine } from '@/scripts/brainfuxk/BFMachine';
 import { Status } from '@/scripts/brainfuxk/BFStatus';
 
-// Form
+// Input
 const codeModel = ref('');
 const inputModel = ref('');
-const autoEnter = ref(false);
+
+// Output
 const outputModel = ref('');
 
-// Machine
-const machine = new BFMachine();
+// Settings
+const autoEnter = ref(false);
 
-const machineMem = computed(() => machine.mem);
+const bases = ['Dec', 'Hex', 'Oct', 'Bin'];
+const memViewSettings = ref([
+  {
+    label: 'Address Base',
+    items: bases,
+    model: ref(bases[0])
+  },
+  {
+    label: 'Value Base',
+    items: bases,
+    model: ref(bases[0])
+  },
+])
 
-// Page
-const enum State {
-  HALTED,
-  RUNNING,
-  WAITING_INPUT
-}
-
-const currentState = ref(State.HALTED);
-
-const statusMsg = computed(() => ({
-  [State.HALTED]: 'Halted',
-  [State.RUNNING]: 'Running',
-  [State.WAITING_INPUT]: 'Waiting for input'
-}[currentState.value]));
-
-const statusIcon = computed(() => ({
-  [State.HALTED]: 'mdi-stop',
-  [State.RUNNING]: 'mdi-play',
-  [State.WAITING_INPUT]: 'mdi-pause'
-}[currentState.value]));
-
+// Controls
 const btns = ref([
   {
     icon: 'mdi-play',
@@ -152,6 +196,84 @@ const btns = ref([
   }
 ]);
 
+// Machine
+const machine = new BFMachine();
+
+// Page
+const forceUpdateMem = ref(false);
+const machineMemRef = ref(machine.mem);
+const machineMem = computed({
+  get() {
+    // Dummy access to force update
+    forceUpdateMem.value;
+
+    const base = {
+      [bases[0]]: {
+        base: 10,
+        prefix: ''
+      },
+      [bases[1]]: {
+        base: 16,
+        prefix: '0x'
+      },
+      [bases[2]]: {
+        base: 8,
+        prefix: '0o'
+      },
+      [bases[3]]: {
+        base: 2,
+        prefix: '0b'
+      }
+    };
+
+    return machineMemRef.value.map((mem, index) => {
+      const indexBase = base[memViewSettings.value[0].model];
+      const memBase = base[memViewSettings.value[1].model];
+
+      return [
+        indexBase.prefix + index.toString(indexBase.base),
+        memBase.prefix + mem.toString(memBase.base)
+      ]
+    })
+  },
+  set(value) {
+    machineMemRef.value = value;
+    forceUpdateMem.value = !forceUpdateMem.value;
+  }
+});
+
+const forceUpdatePtr = ref(false);
+const machinePtrRef = ref(machine.ptr);
+const machinePtr = computed({
+  get() {
+    return machinePtrRef.value;
+  },
+  set(value) {
+    machinePtrRef.value = value;
+    forceUpdatePtr.value = !forceUpdatePtr.value;
+  }
+})
+
+const enum State {
+  HALTED,
+  RUNNING,
+  WAITING_INPUT
+}
+
+const currentState = ref(State.HALTED);
+
+const statusMsg = computed(() => ({
+  [State.HALTED]: 'Halted',
+  [State.RUNNING]: 'Running',
+  [State.WAITING_INPUT]: 'Waiting for input'
+}[currentState.value]));
+
+const statusIcon = computed(() => ({
+  [State.HALTED]: 'mdi-stop',
+  [State.RUNNING]: 'mdi-play',
+  [State.WAITING_INPUT]: 'mdi-pause'
+}[currentState.value]));
+
 // Watchers
 watch(currentState, (newState, oldState) => {
   switch(newState) {
@@ -166,7 +288,7 @@ watch(currentState, (newState, oldState) => {
       });
       break;
   }
-})
+});
 
 function updateInput() {
   if(autoEnter.value) {
@@ -185,6 +307,8 @@ function machineInput() {
 
 function autoStep() {
   let status = machine.step();
+  machineMem.value = machine.mem;
+  machinePtrRef.value = machine.ptr;
 
   switch(status.id) {
     case Status.RUNNING:

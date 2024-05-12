@@ -3,11 +3,11 @@ import { BFError, Error } from './BFError';
 import { BFStatus, Status } from './BFStatus';
 
 export class BFMachine {
-  private progMem: number[];
-  private progPtr: number;
+  private _progMem: number[];
+  private _progPtr: number;
 
-  private mem: number[];
-  private ptr: number;
+  private _mem: number[];
+  private _ptr: number;
 
   private loopStack: number[];
 
@@ -52,7 +52,7 @@ export class BFMachine {
         return new BFError(Error.INVALID_SYNTAX, 0, 0);
       }
 
-      this.progMem.push(markToNum[matched[1]]);
+      this._progMem.push(markToNum[matched[1]]);
 
       remain = matched[2];
     } while(remain !== '');
@@ -61,11 +61,11 @@ export class BFMachine {
   }
 
   public reset(): void {
-    this.progPtr = 0;
-    this.progMem = [];
+    this._progPtr = 0;
+    this._progMem = [];
 
-    this.ptr = 0;
-    this.mem = [];
+    this._ptr = 0;
+    this._mem = [];
 
     this.loopStack = [];
   }
@@ -73,33 +73,33 @@ export class BFMachine {
   public step(): BFStatus {
     const result = new BFStatus(Status.RUNNING, '');
 
-    switch(this.progMem[this.progPtr]) {
+    switch(this._progMem[this._progPtr]) {
       case MarkSpec.enum.inc:
-        this.ptr++;
+        this._ptr++;
         break;
 
       case MarkSpec.enum.dec:
-        this.ptr--;
+        this._ptr--;
         break;
 
       case MarkSpec.enum.incVal:
-        if(this.mem[this.ptr] === undefined) {
-          this.mem[this.ptr] = 1;
+        if(this._mem[this._ptr] === undefined) {
+          this._mem[this._ptr] = 1;
         } else {
-          this.mem[this.ptr]++;
+          this._mem[this._ptr]++;
         }
         break;
 
       case MarkSpec.enum.decVal:
-        if(this.mem[this.ptr] === undefined) {
-          this.mem[this.ptr] = -1;
+        if(this._mem[this._ptr] === undefined) {
+          this._mem[this._ptr] = -1;
         } else {
-          this.mem[this.ptr]--;
+          this._mem[this._ptr]--;
         }
         break;
 
       case MarkSpec.enum.output:
-        result.stdout = String.fromCharCode(this.mem[this.ptr]);
+        result.stdout = String.fromCharCode(this._mem[this._ptr]);
         break;
 
       case MarkSpec.enum.input:
@@ -107,17 +107,17 @@ export class BFMachine {
         break;
 
       case MarkSpec.enum.loopStart:
-        this.loopStack.push(this.progPtr);
+        this.loopStack.push(this._progPtr);
 
-        if(this.mem[this.ptr] === 0) {
+        if(this._mem[this._ptr] === 0) {
           let currentDepth = this.loopStack.length;
 
           do {
-            this.progPtr++;
+            this._progPtr++;
 
-            switch(this.progMem[this.progPtr]) {
+            switch(this._progMem[this._progPtr]) {
               case MarkSpec.enum.loopStart:
-                this.loopStack.push(this.progPtr);
+                this.loopStack.push(this._progPtr);
                 break;
 
               case MarkSpec.enum.loopEnd:
@@ -145,16 +145,16 @@ export class BFMachine {
           );
         }
 
-        if(this.mem[this.ptr] !== 0) {
-          this.progPtr = pairPtr;
+        if(this._mem[this._ptr] !== 0) {
+          this._progPtr = pairPtr;
           this.loopStack.push(pairPtr);
         }
         break;
     }
 
-    this.progPtr++;
+    this._progPtr++;
 
-    if(this.progPtr >= this.progMem.length) {
+    if(this._progPtr >= this._progMem.length) {
       result.id = Status.HALTED;
     }
 
@@ -162,6 +162,22 @@ export class BFMachine {
   }
 
   public store(input: string): void {
-    this.mem[this.ptr] = input.charCodeAt(0);
+    this._mem[this._ptr] = input.charCodeAt(0);
+  }
+
+  get progMem(): number[] {
+    return this._progMem;
+  }
+
+  get progPtr(): number {
+    return this._progPtr;
+  }
+
+  get mem(): number[] {
+    return this._mem;
+  }
+
+  get ptr(): number {
+    return this._ptr;
   }
 }
