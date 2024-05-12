@@ -2,27 +2,15 @@
   <v-container>
     <v-row>
       <v-col cols="12" lg="6">
-        <v-textarea
-          label="Code"
-          name="code"
-          v-model="codeModel"
-          :disabled="currentState !== State.HALTED"
-          clearable
-        ></v-textarea>
-      </v-col>
-
-      <v-col cols="12" lg="6">
         <v-container>
-          <!-- Output -->
           <v-row>
             <v-col>
               <v-textarea
-                label="Output"
-                name="output"
-                v-model="outputModel"
-                variant="outlined"
-                auto-grow
-                readonly
+                label="Code"
+                name="code"
+                v-model="codeModel"
+                :disabled="currentState !== State.HALTED"
+                clearable
               ></v-textarea>
             </v-col>
           </v-row>
@@ -75,9 +63,27 @@
               </v-expansion-panels>
             </v-col>
           </v-row>
+        </v-container>
+      </v-col>
+
+      <v-col cols="12" lg="6">
+        <v-container>
+          <!-- Output -->
+          <v-row>
+            <v-col>
+              <v-textarea
+                label="Output"
+                name="output"
+                v-model="outputModel"
+                variant="outlined"
+                auto-grow
+                readonly
+              ></v-textarea>
+            </v-col>
+          </v-row>
 
           <!-- Memory View Config -->
-          <v-row class="mt-4" no-gutters>
+          <v-row no-gutters>
             <v-col
               v-for="setting in memViewSettings"
               cols="6"
@@ -485,8 +491,8 @@ function updateMarksFromMachine() {
     'loopStart',
     'loopEnd'
   ].forEach((key, index) => {
-    markSettings.value[index].model = machine.mark[key];
-  });
+      markSettings.value[index].model = machine.mark[key];
+    });
 }
 
 function updateMarksByPreset(name: string) {
