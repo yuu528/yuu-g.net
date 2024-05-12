@@ -11,10 +11,11 @@
         ></v-textarea>
 
         <v-container>
+          <!-- Controls -->
           <v-row>
             <v-col
               v-for="btn in btns"
-              cols="6"
+              :cols="btn.cols || 6"
             >
               <v-btn
                 :prepend-icon="btn.icon"
@@ -27,6 +28,8 @@
               </v-btn>
             </v-col>
           </v-row>
+
+          <!-- Input -->
           <v-row align="center">
             <v-col>
               <v-sheet class="d-flex align-stretch">
@@ -66,6 +69,8 @@
               </v-sheet>
             </v-col>
           </v-row>
+
+          <!-- Memory View Config -->
           <v-row>
             <v-col
               v-for="setting in memViewSettings"
@@ -78,6 +83,8 @@
               ></v-select>
             </v-col>
           </v-row>
+
+          <!-- Memory View -->
           <v-row v-if="machineMemRef.length > 0">
             <v-col>
               <v-sheet
@@ -142,6 +149,37 @@ import { AsyncCall } from '@/scripts/brainfuxk/AsyncCall';
 
 AsyncCall.initialize();
 
+// Machine
+const machine = new BFMachine();
+
+// States
+const enum State {
+  HALTED,
+  RUNNING,
+  WAITING_INPUT,
+  PAUSED
+}
+
+const currentState = ref(State.HALTED);
+
+const disableNextStep = ref(false);
+
+const statusMsg = computed(() => ({
+  [State.HALTED]: 'Halted',
+  [State.RUNNING]: 'Running',
+  [State.WAITING_INPUT]: 'Waiting for input',
+  [State.PAUSED]: 'Paused'
+}[currentState.value]));
+
+const statusIcon = computed(() => ({
+  [State.HALTED]: 'mdi-stop',
+  [State.RUNNING]: 'mdi-play',
+  [State.WAITING_INPUT]: 'mdi-pen',
+  [State.PAUSED]: 'mdi-pause'
+}[currentState.value]));
+
+const stepping = ref(false);
+
 // Input
 const codeModel = ref('');
 const inputModel = ref('');
@@ -164,31 +202,69 @@ const memViewSettings = ref([
     items: bases,
     model: ref(bases[0])
   },
-])
+]);
 
 // Controls
+
+/*
+  Decision Table
+
+                                                disabled
+    currentState  | stepping | codeModel |  Run  | Step  | Pause | Halt
+  ----------------+----------+-----------+-------+-------+-------|------
+          *       |    *     |   empty   | true  | true  | true  |  *
+        HALTED    |    *     |    *      | false | false | true  | true
+       RUNNING    |  false   |    *      | true  | true  | false | false
+       RUNNING    |   true   |    *      | false | false | true  | false
+    WAITING_INPUT |    *     |    *      | false | false | true  | false
+        PAUSED    |    *     |    *      | false | false | true  | false
+*/
 const btns = ref([
   {
     icon: 'mdi-play',
     text: 'Run',
     fn: () => {
-      // Load code
-      machine.reset();
-
-      let result = machine.load(codeModel.value);
-
-      if(result === true) {
-        outputModel.value = '';
-
-        disableNextStep.value = false;
-        autoStep();
+      if(currentState.value === State.HALTED) {
+        run();
       } else {
-        outputModel.value = 'Error: ' + result.error.toString();
+        stepping.value = false;
+        step();
       }
     },
     disabled: computed(() =>
-      currentState.value !== State.HALTED || codeModel.value === ''
-    )
+      codeModel.value === ''
+        || (currentState.value === State.RUNNING && !stepping.value)
+    ),
+    cols: 3
+  },
+  {
+    icon: 'mdi-step-forward',
+    text: 'Step',
+    fn: () => {
+      if(currentState.value === State.HALTED) {
+        run(true);
+      } else {
+        stepping.value = true;
+        step();
+      }
+    },
+    disabled: computed(() =>
+      codeModel.value === ''
+        || (currentState.value === State.RUNNING && !stepping.value)
+    ),
+    cols: 3
+  },
+  {
+    icon: 'mdi-pause',
+    text: 'Pause',
+    fn: () => {
+      disableNextStep.value = true;
+      currentState.value = State.PAUSED;
+    },
+    disabled: computed(() =>
+      currentState.value !== State.RUNNING || stepping.value
+    ),
+    cols: 3
   },
   {
     icon: 'mdi-stop',
@@ -199,12 +275,10 @@ const btns = ref([
     },
     disabled: computed(() =>
       currentState.value === State.HALTED
-    )
+    ),
+    cols: 3
   }
 ]);
-
-// Machine
-const machine = new BFMachine();
 
 // Page
 const forceUpdateMem = ref(false);
@@ -261,28 +335,6 @@ const machinePtr = computed({
   }
 })
 
-const enum State {
-  HALTED,
-  RUNNING,
-  WAITING_INPUT
-}
-
-const currentState = ref(State.HALTED);
-
-const disableNextStep = ref(false);
-
-const statusMsg = computed(() => ({
-  [State.HALTED]: 'Halted',
-  [State.RUNNING]: 'Running',
-  [State.WAITING_INPUT]: 'Waiting for input'
-}[currentState.value]));
-
-const statusIcon = computed(() => ({
-  [State.HALTED]: 'mdi-stop',
-  [State.RUNNING]: 'mdi-play',
-  [State.WAITING_INPUT]: 'mdi-pause'
-}[currentState.value]));
-
 // Watchers
 watch(currentState, (newState, oldState) => {
   switch(newState) {
@@ -311,10 +363,28 @@ function updateAutoEnter() {
 
 function machineInput() {
   machine.store(inputModel.value);
-  AsyncCall.asyncCall(autoStep);
+  AsyncCall.asyncCall(step);
 }
 
-function autoStep() {
+function run(enableStep?: boolean) {
+  // Load code
+  machine.reset();
+
+  let result = machine.load(codeModel.value);
+
+  if(result === true) {
+    outputModel.value = '';
+
+    disableNextStep.value = false;
+
+    stepping.value = enableStep || false;
+    step();
+  } else {
+    outputModel.value = 'Error: ' + result.error.toString();
+  }
+}
+
+function step() {
   if(disableNextStep.value) {
     disableNextStep.value = false;
     return;
@@ -329,7 +399,12 @@ function autoStep() {
       outputModel.value += status.stdout;
 
       currentState.value = State.RUNNING;
-      AsyncCall.asyncCall(autoStep);
+
+      if(!stepping.value) {
+        AsyncCall.asyncCall(step);
+      } else {
+        currentState.value = State.PAUSED;
+      }
       break;
 
     case Status.HALTED:
