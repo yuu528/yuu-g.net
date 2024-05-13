@@ -9,7 +9,8 @@
                 label="Code"
                 name="code"
                 v-model="codeModel"
-                :disabled="currentState !== State.HALTED"
+                :variant="currentState !== State.HALTED ? 'outlined' : 'filled'"
+                :readonly="currentState !== State.HALTED"
                 clearable
               ></v-textarea>
             </v-col>
@@ -41,7 +42,8 @@
                             :label="setting.label"
                             density="compact"
                             class="mx-1"
-                            :disabled="currentState !== State.HALTED || selectedPreset !== 'Custom'"
+                            :variant="currentState !== State.HALTED || selectedPreset !== 'Custom' ? 'outlined' : 'filled'"
+                            :readonly="currentState !== State.HALTED || selectedPreset !== 'Custom'"
                             v-model="setting.model"
                           ></v-text-field>
                         </v-col>
