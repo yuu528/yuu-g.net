@@ -142,7 +142,7 @@ export class MarkSpec {
   public loopStart: string | string[];
   public loopEnd: string | string[];
 
-  constructor(spec?: {key: string, mark: string | string[]}) {
+  constructor(spec?: {[key: string]: string | string[]}) {
     if(spec !== undefined) {
       Object.entries(spec).forEach(([key, mark]) => {
         this[key] = mark;
