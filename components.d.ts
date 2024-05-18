@@ -7,13 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    About: typeof import('./src/components/about/About.vue')['default']
     AppBar: typeof import('./src/components/AppBar.vue')['default']
     CardList: typeof import('./src/components/index/CardList.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     Generate: typeof import('./src/components/brainfuxk/Generate.vue')['default']
     Home: typeof import('./src/components/index/Home.vue')['default']
-    Main: typeof import('./src/components/Main.vue')['default']
     NotFound: typeof import('./src/components/404/NotFound.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
