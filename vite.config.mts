@@ -23,7 +23,12 @@ export default defineConfig({
         configFile: 'src/styles/settings.scss',
       },
     }),
-    Components(),
+    Components({
+      dirs: [
+        'src/components',
+        'src/components/index'
+      ]
+    }),
     ViteFonts({
       google: {
         families: [ {
