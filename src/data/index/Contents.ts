@@ -4,7 +4,7 @@ export class Contents {
       title: 'GakujoViewer',
       text: '静岡大学学務情報システムの非公式クライアント',
       link: 'Visit',
-      href: 'https://github.com/SU-ProgC-Marionnette/GakujoViewer',
+      to: '/su/gv',
       targets: ['mdi-microsoft-windows', 'mdi-linux']
     },
     {
