@@ -2,14 +2,22 @@
 <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://yuu-g.net/</loc>
+    <lastmod>2024-05-20</lastmod>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://yuu-g.net/about/</loc>
+    <loc>https://yuu-g.net/about</loc>
+    <lastmod>2024-05-21</lastmod>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://yuu-g.net/brainfuxk</loc>
+    <lastmod>2024-05-16</lastmod>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://yuu-g.net/su/gv</loc>
+    <lastmod>2024-05-20</lastmod>
+    <changefreq>monthly</changefreq>
   </url>
 </urlset>
