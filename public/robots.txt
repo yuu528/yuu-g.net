@@ -1,10 +1,4 @@
 User-Agent: *
-Disallow: /
-Allow: /$
-Allow: /index.html
-Allow: /sitemap.xml
-
-Allow: /brainfuxk
-Allow: /su
+Disallow: /about
 
 Sitemap: https://yuu-g.net/sitemap.xml
