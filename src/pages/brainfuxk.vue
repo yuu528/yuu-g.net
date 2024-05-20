@@ -21,6 +21,7 @@
 <route lang="yaml">
 meta:
   title: BrainFu*k Interpreter & Generator
+  description: BrainFu*kのインタプリタとジェネレータ
 </route>
 
 <script setup lang="ts">
