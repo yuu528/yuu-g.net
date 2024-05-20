@@ -60,11 +60,13 @@ const tabEnabled = computed(() =>
 const prependButton = computed(() => {
   if(tabEnabled.value) {
     return null;
+/*
   } else if(window.history.length > 1) {
     return {
       handler: () => router.back(),
       icon: 'mdi-arrow-left'
     };
+*/
   } else {
     return {
       handler: () => router.push('/'),
