@@ -15,6 +15,15 @@ const router = createRouter({
 })
 
 const TITLE_SUFFIX = 'Yuu-G.net'
+const getFooter = () => document.getElementById('app-footer')
+
+router.beforeEach((to, from) => {
+  const footer = getFooter()
+
+  if(footer) {
+    footer.style.display = 'none'
+  }
+})
 
 router.afterEach((to, from) => {
   const title = to.meta.title ?? ''
@@ -31,6 +40,12 @@ router.afterEach((to, from) => {
     document.head.appendChild(meta)
   } else {
     metaDescription.setAttribute('content', description)
+  }
+
+  const footer = getFooter()
+
+  if(footer) {
+    footer.style.display = ''
   }
 })
 

@@ -1,5 +1,5 @@
 <template>
-  <v-footer>
+  <v-footer id="app-footer">
     <v-sheet class="w-100 text-center">
       &copy; {{ new Date().getFullYear() }} Yuu528
     </v-sheet>
