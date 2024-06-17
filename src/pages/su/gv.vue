@@ -4,9 +4,7 @@
       <v-col cols="12">
         <span class="text-h3">
           <v-avatar size="3.5rem">
-            <v-img
-              src="@/assets/su/gv/icon.png"
-            ></v-img>
+            <v-img src="@/assets/su/gv/icon.png"></v-img>
           </v-avatar>
           GakujoViewer
         </span>
@@ -24,18 +22,12 @@
           機能説明
         </span>
       </v-col>
-      <v-col
-        v-for="description in Descriptions"
-        cols="12"
-        class="mt-6"
-      >
+      <v-col v-for="description in Descriptions" cols="12" class="mt-6">
         <v-sheet>
           <v-container>
             <v-row>
               <v-col v-if="'image' in description" cols="12" md="6">
-                <v-img
-                  :src="description.image"
-                ></v-img>
+                <v-img :src="description.image"></v-img>
               </v-col>
 
               <v-col cols="12" md="6">
@@ -54,20 +46,12 @@
         </span>
       </v-col>
       <v-col cols="12" sm="6">
-        <v-btn
-          href="https://github.com/SU-ProgC-Marionnette/GakujoViewer/releases"
-          class="w-100"
-          prepend-icon="mdi-folder-zip"
-          color="primary"
-        >インストーラ・ZIP</v-btn>
+        <v-btn href="https://github.com/SU-ProgC-Marionnette/GakujoViewer/releases" class="w-100"
+          :prepend-icon="mdiFolderZip" color="primary">インストーラ・ZIP</v-btn>
       </v-col>
       <v-col cols="12" sm="6">
-        <v-btn
-          href="https://github.com/SU-ProgC-Marionnette/GakujoViewer"
-          class="w-100"
-          prepend-icon="mdi-file-code"
-          color="primary"
-        >ソースコード</v-btn>
+        <v-btn href="https://github.com/SU-ProgC-Marionnette/GakujoViewer" class="w-100" :prepend-icon="mdiFileCode"
+          color=" primary">ソースコード</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -80,5 +64,7 @@ meta:
 </route>
 
 <script lang="ts" setup>
+import { mdiFolderZip, mdiFileCode } from '@mdi/js';
+
 import { Descriptions } from '@/data/su/gv/Descriptions';
 </script>

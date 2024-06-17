@@ -5,14 +5,9 @@
         <v-container>
           <v-row>
             <v-col>
-              <v-textarea
-                label="Code"
-                name="code"
-                v-model="codeModel"
+              <v-textarea label="Code" name="code" v-model="codeModel"
                 :variant="currentState !== State.HALTED ? 'outlined' : 'filled'"
-                :readonly="currentState !== State.HALTED"
-                clearable
-              ></v-textarea>
+                :readonly="currentState !== State.HALTED" clearable></v-textarea>
             </v-col>
           </v-row>
 
@@ -20,43 +15,28 @@
           <v-row no-gutters>
             <v-col>
               <v-expansion-panels>
-                <v-expansion-panel
-                  title="Instruction Settings"
-                >
+                <v-expansion-panel title="Instruction Settings">
                   <v-expansion-panel-text>
                     <v-container>
                       <v-row no-gutters>
-                        <v-select
-                          label="Instruction Preset"
-                          :items="markPresets.map(p => p.name)"
-                          v-model="selectedPreset"
-                        ></v-select>
+                        <v-select label="Instruction Preset" :items="markPresets.map(p => p.name)"
+                          v-model="selectedPreset"></v-select>
                       </v-row>
 
                       <v-row no-gutters>
-                        <v-col
-                          v-for="setting in markSettings"
-                          cols="3"
-                        >
-                          <v-text-field
-                            :label="setting.label"
-                            density="compact"
-                            class="mx-1"
+                        <v-col v-for="setting in markSettings" cols="3">
+                          <v-text-field :label="setting.label" density="compact" class="mx-1"
                             :variant="currentState !== State.HALTED || selectedPreset !== 'Custom' ? 'outlined' : 'filled'"
                             :readonly="currentState !== State.HALTED || selectedPreset !== 'Custom'"
-                            v-model="setting.model"
-                          ></v-text-field>
+                            v-model="setting.model"></v-text-field>
                         </v-col>
                       </v-row>
 
                       <v-row no-gutters>
                         <v-col>
-                          <v-btn
-                            color="primary"
+                          <v-btn color="primary"
                             :disabled="currentState !== State.HALTED || selectedPreset !== 'Custom'"
-                            @click="updateMarks()"
-                            block
-                          >Update Marks</v-btn>
+                            @click="updateMarks()" block>Update Marks</v-btn>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -73,45 +53,24 @@
           <!-- Output -->
           <v-row>
             <v-col>
-              <v-textarea
-                label="Output"
-                name="output"
-                v-model="outputModel"
-                variant="outlined"
-                auto-grow
-                readonly
-              ></v-textarea>
+              <v-textarea label="Output" name="output" v-model="outputModel" variant="outlined" auto-grow
+                readonly></v-textarea>
             </v-col>
           </v-row>
 
           <!-- Memory View Config -->
           <v-row no-gutters>
-            <v-col
-              v-for="setting in memViewSettings"
-              cols="6"
-            >
-              <v-select
-                :label="setting.label"
-                :items="setting.items"
-                density="compact"
-                class="mx-1"
-                v-model="setting.model"
-              ></v-select>
+            <v-col v-for="setting in memViewSettings" cols="6">
+              <v-select :label="setting.label" :items="setting.items" density="compact" class="mx-1"
+                v-model="setting.model"></v-select>
             </v-col>
           </v-row>
 
           <!-- Memory View -->
           <v-row v-if="machineMem.length > 0" no-gutters>
             <v-col>
-              <v-sheet
-                class="d-flex flex-wrap"
-                elevation="2"
-                rounded
-                style="width: fit-content;"
-              >
-                <v-sheet
-                  class="text-center"
-                >
+              <v-sheet class="d-flex flex-wrap" elevation="2" rounded style="width: fit-content;">
+                <v-sheet class="text-center">
                   <span class="mx-2">
                     Address
                   </span>
@@ -121,11 +80,8 @@
                   </span>
                 </v-sheet>
                 <v-divider vertical></v-divider>
-                <v-sheet
-                  v-for="(mem, index) in machineMem"
-                  class="text-center"
-                  :color="index === machinePtr ? 'red-lighten-4' : ''"
-                >
+                <v-sheet v-for="(mem, index) in machineMem" class="text-center"
+                  :color="index === machinePtr ? 'red-lighten-4' : ''">
                   <span class="mx-2">
                     {{ mem[0] }}
                   </span>
@@ -140,17 +96,8 @@
 
           <!-- Controls -->
           <v-row>
-            <v-col
-              v-for="btn in btns"
-              :cols="btn.cols || 6"
-            >
-              <v-btn
-                :prepend-icon="btn.icon"
-                color="primary"
-                block
-                :disabled="btn.disabled"
-                @click="btn.fn()"
-              >
+            <v-col v-for="btn in btns" :cols="btn.cols || 6">
+              <v-btn :prepend-icon="btn.icon" color="primary" block :disabled="btn.disabled" @click="btn.fn()">
                 {{ btn.text }}
               </v-btn>
             </v-col>
@@ -160,37 +107,16 @@
           <v-row align="center">
             <v-col>
               <v-sheet class="d-flex align-stretch">
-                <v-chip
-                  class="mt-2"
-                  :prepend-icon="statusIcon"
-                >
+                <v-chip class="mt-2" :prepend-icon="statusIcon">
                   {{ statusMsg }}
                 </v-chip>
-                <v-text-field
-                  id="input-field"
-                  class="mx-4"
-                  label="Input"
-                  v-model="inputModel"
-                  density="compact"
-                  maxlength="1"
-                  :disabled="currentState !== State.WAITING_INPUT"
-                  @update:modelValue="updateInput()"
-                  @keydown.enter="machineInput()"
-                ></v-text-field>
-                <v-checkbox
-                  label="Auto Enter"
-                  color="primary"
-                  density="compact"
-                  v-model="autoEnter"
-                  hide-details
-                  @click="updateAutoEnter()"
-                >
+                <v-text-field id="input-field" class="mx-4" label="Input" v-model="inputModel" density="compact"
+                  maxlength="1" :disabled="currentState !== State.WAITING_INPUT" @update:modelValue="updateInput()"
+                  @keydown.enter="machineInput()"></v-text-field>
+                <v-checkbox label="Auto Enter" color="primary" density="compact" v-model="autoEnter" hide-details
+                  @click="updateAutoEnter()">
                 </v-checkbox>
-                <v-btn
-                  class="mt-2"
-                  :disabled="inputModel === '' || autoEnter"
-                  @click="machineInput()"
-                >
+                <v-btn class="mt-2" :disabled="inputModel === '' || autoEnter" @click="machineInput()">
                   Enter
                 </v-btn>
               </v-sheet>
@@ -204,6 +130,13 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue';
+import {
+  mdiPause,
+  mdiPen,
+  mdiPlay,
+  mdiStepForward,
+  mdiStop,
+} from '@mdi/js';
 
 import { BFMachine } from '@/scripts/brainfuxk/BFMachine';
 import { BFError } from '@/scripts/brainfuxk/BFError';
@@ -239,10 +172,10 @@ const statusMsg = computed(() => ({
 }[currentState.value]));
 
 const statusIcon = computed(() => ({
-  [State.HALTED]: 'mdi-stop',
-  [State.RUNNING]: 'mdi-play',
-  [State.WAITING_INPUT]: 'mdi-pen',
-  [State.PAUSED]: 'mdi-pause'
+  [State.HALTED]: mdiStop,
+  [State.RUNNING]: mdiPlay,
+  [State.WAITING_INPUT]: mdiPen,
+  [State.PAUSED]: mdiPause
 }[currentState.value]));
 
 const stepping = ref(false);
@@ -291,10 +224,10 @@ updateMarksFromMachine();
 */
 const btns = ref([
   {
-    icon: 'mdi-play',
+    icon: mdiPlay,
     text: 'Run',
     fn: () => {
-      if(currentState.value === State.HALTED) {
+      if (currentState.value === State.HALTED) {
         run();
       } else {
         stepping.value = false;
@@ -303,16 +236,16 @@ const btns = ref([
     },
     disabled: computed(() =>
       codeModel.value === ''
-        || currentState.value === State.WAITING_INPUT
-        || (currentState.value === State.RUNNING && !stepping.value)
+      || currentState.value === State.WAITING_INPUT
+      || (currentState.value === State.RUNNING && !stepping.value)
     ),
     cols: 3
   },
   {
-    icon: 'mdi-step-forward',
+    icon: mdiStepForward,
     text: 'Step',
     fn: () => {
-      if(currentState.value === State.HALTED) {
+      if (currentState.value === State.HALTED) {
         run(true);
       } else {
         stepping.value = true;
@@ -321,13 +254,13 @@ const btns = ref([
     },
     disabled: computed(() =>
       codeModel.value === ''
-        || currentState.value === State.WAITING_INPUT
-        || (currentState.value === State.RUNNING && !stepping.value)
+      || currentState.value === State.WAITING_INPUT
+      || (currentState.value === State.RUNNING && !stepping.value)
     ),
     cols: 3
   },
   {
-    icon: 'mdi-pause',
+    icon: mdiPause,
     text: 'Pause',
     fn: () => {
       disableNextStep.value = true;
@@ -339,7 +272,7 @@ const btns = ref([
     cols: 3
   },
   {
-    icon: 'mdi-stop',
+    icon: mdiStop,
     text: 'Halt',
     fn: () => {
       disableNextStep.value = true;
@@ -409,7 +342,7 @@ const machinePtr = computed({
 
 // Watchers
 watch(currentState, (newState, oldState) => {
-  switch(newState) {
+  switch (newState) {
     case State.HALTED:
     case State.RUNNING:
     case State.PAUSED:
@@ -440,12 +373,12 @@ function updateMarksFromMachine() {
     'loopStart',
     'loopEnd'
   ].forEach((key, index) => {
-      markSettings.value[index].model = machine.mark[key];
-    });
+    markSettings.value[index].model = machine.mark[key];
+  });
 }
 
 function updateMarksByPreset(name: string) {
-  if(name === 'Custom') return;
+  if (name === 'Custom') return;
 
   machine.setMark(markPresets.find(preset => preset.name === name).markSpec);
   updateMarksFromMachine();
@@ -465,7 +398,7 @@ function updateMarks() {
 }
 
 function updateInput() {
-  if(autoEnter.value) {
+  if (autoEnter.value) {
     machineInput();
   }
 }
@@ -489,7 +422,7 @@ function run(enableStep?: boolean) {
 
   let result = machine.load(codeModel.value);
 
-  if(result === true) {
+  if (result === true) {
     outputModel.value = '';
 
     disableNextStep.value = false;
@@ -502,7 +435,7 @@ function run(enableStep?: boolean) {
 }
 
 function step() {
-  if(disableNextStep.value) {
+  if (disableNextStep.value) {
     disableNextStep.value = false;
     return;
   }
@@ -511,19 +444,19 @@ function step() {
   machineMem.value = machine.mem;
   machinePtr.value = machine.ptr;
 
-  if(status.error !== undefined) {
+  if (status.error !== undefined) {
     errorHandle(status.error);
     currentState.value = State.HALTED;
     return;
   }
 
-  switch(status.id) {
+  switch (status.id) {
     case Status.RUNNING:
       outputModel.value += status.stdout;
 
       currentState.value = State.RUNNING;
 
-      if(!stepping.value) {
+      if (!stepping.value) {
         AsyncCall.asyncCall(step);
       } else {
         currentState.value = State.PAUSED;

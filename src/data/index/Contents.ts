@@ -1,3 +1,11 @@
+import {
+  mdiAndroid,
+  mdiGithub,
+  mdiLinux,
+  mdiMicrosoftWindows,
+  mdiTwitter,
+} from '@mdi/js';
+
 export class Contents {
   public static readonly apps = [
     {
@@ -5,14 +13,14 @@ export class Contents {
       text: '静岡大学学務情報システムの非公式クライアント',
       link: 'Visit',
       to: '/su/gv',
-      targets: ['mdi-microsoft-windows', 'mdi-linux']
+      targets: [mdiMicrosoftWindows, mdiLinux]
     },
     {
       title: '艦これブラウザ',
       text: 'AndroidでもPCと同じUI・画質・音質で遊べる艦これブラウザ',
       link: 'Visit',
       href: 'https://old.yuu-g.net/kcbrowser/',
-      targets: ['mdi-android']
+      targets: [mdiAndroid]
     },
   ];
 
@@ -60,13 +68,13 @@ export class Contents {
 
   public static readonly links = [
     {
-      icon: 'mdi-twitter',
+      icon: mdiTwitter,
       title: 'Twitter',
       link: 'Visit',
       href: 'https://twitter.com/you_yuu528'
     },
     {
-      icon: 'mdi-github',
+      icon: mdiGithub,
       title: 'GitHub',
       link: 'Visit',
       href: 'https://github.com/yuu528'
