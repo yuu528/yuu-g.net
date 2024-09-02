@@ -3,6 +3,7 @@
     <template v-slot:prepend v-if="prependButton !== null">
       <v-app-bar-nav-icon
         :icon="prependButton.icon"
+        class="ml-2"
         @click="prependButton.handler"
       />
     </template>
@@ -30,6 +31,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { mdiHome } from '@mdi/js';
 
 const router = useRouter();
 
@@ -70,7 +72,7 @@ const prependButton = computed(() => {
   } else {
     return {
       handler: () => router.push('/'),
-      icon: 'mdi-home'
+      icon: mdiHome
     };
   }
 
