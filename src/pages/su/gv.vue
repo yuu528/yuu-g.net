@@ -14,6 +14,15 @@
           静岡大学 学務情報システムを閲覧しやすくするWindows、Linux向けソフトウェア
         </p>
       </v-col>
+      <v-col cols="12">
+        <v-card class="mt-6 bg-red-lighten-2">
+          <v-card-text>
+            現在、新システム(LiveCampusU)には
+            <span class="font-weight-bold">対応しておりません</span>。<br>
+            今後の対応については未定です。
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
 
     <v-row class="mt-10" no-gutters>
