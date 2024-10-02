@@ -17,9 +17,7 @@
       <v-col cols="12">
         <v-card class="mt-6 bg-red-lighten-2">
           <v-card-text>
-            現在、新システム(LiveCampusU)には
-            <span class="font-weight-bold">対応しておりません</span>。<br>
-            今後の対応については未定です。
+            v0.2.0で新システム(LiveCampusU)に対応しましたが、まだ不具合が残っている可能性があります。
           </v-card-text>
         </v-card>
       </v-col>
