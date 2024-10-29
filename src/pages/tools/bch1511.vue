@@ -6,5 +6,5 @@
 <script setup lang="ts">
 import { BCHUtil } from '@/scripts/tools/bch1511/BCHUtil';
 
-BCHUtil.encode('10001000011');
+const result = BCHUtil.encode('10001000011');
 </script>

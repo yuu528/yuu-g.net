@@ -1,5 +1,10 @@
 import { BinaryValue } from './BinaryValue';
 
+export interface EncodeResult {
+  quotient: BinaryValue;
+  work: BinaryValue[];
+}
+
 export class BCHUtil {
   // bit array:
   //    x^0 x^1 x^2 ...
@@ -10,13 +15,13 @@ export class BCHUtil {
   public static readonly infoBitsLength: number = 11;
   public static readonly generator: BinaryValue = new BinaryValue('10011'); // x^4 + x + 1
 
-  public static encode(value: boolean[] | number | string): boolean[][] | void {
+  public static encode(value: boolean[] | number | string): EncodeResult {
     const infoBits = new BinaryValue(value);
     // 筆算の初期値は情報ビット+符号ビットの数だけ0
     const work: BinaryValue[] = [
       new BinaryValue(infoBits.asString + '0'.repeat(BCHUtil.codeLength - BCHUtil.infoBitsLength))
     ];
-    const answer: BinaryValue = new BinaryValue(0);
+    const quotient: BinaryValue = new BinaryValue(0);
 
     const generatorMaxPower = BCHUtil.generator.length - 1;
     const generatorPowers = BCHUtil.generator.asArray.map(
@@ -28,7 +33,7 @@ export class BCHUtil {
     while((maxPower = work[work.length - 1].length - 1) >= generatorMaxPower) {
       // 新しい商の項の値
       const newPower = maxPower - generatorMaxPower;
-      answer.setBitAt(newPower, true);
+      quotient.setBitAt(newPower, true);
 
       // かける
       work.push(new BinaryValue(0));
@@ -45,6 +50,9 @@ export class BCHUtil {
       }
     }
 
-    console.log(work.map(value => value.asString));
+    return {
+      quotient: quotient,
+      work: work
+    };
   }
 }
