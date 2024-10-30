@@ -10,8 +10,10 @@
       結果: {{ resultStr }}
     </p>
 
-    <BCHEncodeResult :quotient="result.quotient.asArray" :divisor="BCHUtil.generator.asArray"
-      :work="result.work.map(bin => bin.asArray)" />
+    <div style="user-select: none;">
+      <BCHEncodeResult :quotient="result.quotient.asArray" :divisor="BCHUtil.generator.asArray"
+        :work="result.work.map(bin => bin.asArray)" />
+    </div>
 
     <p>全結果 最小ハミング距離: {{ minHammingDistance }}</p>
     <v-data-table density="compact" :headers="tableHead" :items="allResults" @click:row="onClickRow"></v-data-table>
