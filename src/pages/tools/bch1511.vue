@@ -10,10 +10,11 @@
       結果: {{ resultStr }}
     </p>
 
-    <div style="user-select: none;">
+    <div v-if="result.input.asString.indexOf('1') !== -1" style="user-select: none;">
       <BCHEncodeResult :quotient="result.quotient.asArray" :divisor="BCHUtil.generator.asArray"
         :work="result.work.map(bin => bin.asArray)" />
     </div>
+    <div v-else><br></div>
 
     <p>全結果 最小ハミング距離: {{ minHammingDistance }}</p>
     <v-data-table density="compact" :headers="tableHead" :items="allResults" @click:row="onClickRow"></v-data-table>
