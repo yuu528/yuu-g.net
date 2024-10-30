@@ -21,6 +21,7 @@
 <route lang="yaml">
 meta:
   title: BCH(15, 11)符号化ツール
+  homeDisabled: true
 </route>
 
 <script setup lang="ts">

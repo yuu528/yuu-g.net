@@ -1,28 +1,14 @@
 <template>
   <v-app-bar color="primary">
     <template v-slot:prepend v-if="prependButton !== null">
-      <v-app-bar-nav-icon
-        :icon="prependButton.icon"
-        class="ml-2"
-        @click="prependButton.handler"
-      />
+      <v-app-bar-nav-icon :icon="prependButton.icon" class="ml-2" @click="prependButton.handler" />
     </template>
 
     <v-app-bar-title>{{ title }}</v-app-bar-title>
 
-    <template
-      v-slot:extension
-      v-if="tabEnabled"
-    >
-      <v-tabs
-        v-model="tabModel"
-      >
-        <v-tab
-          v-for="tab in tabs"
-          :key="tab.path"
-          :text="tab.title"
-          :to="tab.path"
-        ></v-tab>
+    <template v-slot:extension v-if="tabEnabled">
+      <v-tabs v-model="tabModel">
+        <v-tab v-for="tab in tabs" :key="tab.path" :text="tab.title" :to="tab.path"></v-tab>
       </v-tabs>
     </template>
   </v-app-bar>
@@ -39,7 +25,7 @@ const router = useRouter();
 const title = computed(() => {
   const currentRoute = router.currentRoute.value;
 
-  if('title' in currentRoute.meta) {
+  if ('title' in currentRoute.meta) {
     return currentRoute.meta.title;
   } else {
     return 'Yuu-G.net';
@@ -60,16 +46,23 @@ const tabEnabled = computed(() =>
 
 // Prepend button
 const prependButton = computed(() => {
-  if(tabEnabled.value) {
+  const currentRoute = router.currentRoute.value;
+
+  if (tabEnabled.value) {
     return null;
-/*
-  } else if(window.history.length > 1) {
-    return {
-      handler: () => router.back(),
-      icon: 'mdi-arrow-left'
-    };
-*/
+    /*
+      } else if(window.history.length > 1) {
+        return {
+          handler: () => router.back(),
+          icon: 'mdi-arrow-left'
+        };
+    */
   } else {
+    console.log(currentRoute)
+    if (currentRoute.meta.homeDisabled === true) {
+      return null;
+    }
+
     return {
       handler: () => router.push('/'),
       icon: mdiHome
