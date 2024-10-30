@@ -39,9 +39,9 @@ const resultTable = computed(() => {
 
   const leftCol =
     '\\begin{array}{r}' +
-    '\\color{transparent}0\\Big)\\\\' +
+    '\\color{transparent}0\\\\' +
     divisorExpr + '\\color{transparent}\\Big) \\\\' +
-    '\\color{transparent}0\\\\'.repeat(props.work.length) +
+    '\\color{transparent}0\\\\'.repeat(props.work.length - 1) +
     '\\end{array}';
 
   const rightCol =

@@ -2,15 +2,12 @@
   <span ref="target"></span>
 </template>
 
-<style>
-.katex-html {
-  display: none;
-}
-</style>
+<style></style>
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import katex from 'katex';
+import 'katex/dist/katex.min.css';
 
 const props = defineProps<{
   expr: string
