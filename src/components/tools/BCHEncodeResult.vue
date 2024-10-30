@@ -48,7 +48,7 @@ const resultTable = computed(() => {
     '\\begin{array}{r}' +
     quotientExpr + ' \\\\' +
     '\\hline' +
-    '\\Big) \\quad' + workExprs.join('') +
+    '\\htmlStyle{margin-left: -.5em}{\\Big)} \\quad' + workExprs.join('') +
     '\\end{array}';
 
   return '\\begin{array}{rr}' +

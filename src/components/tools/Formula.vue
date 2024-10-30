@@ -15,11 +15,14 @@ const props = defineProps<{
 
 const target = ref(null);
 
-onMounted(() => {
-  katex.render(props.expr, target.value);
-});
+onMounted(() => { render(); });
 
-watch(() => props.expr, () => {
-  katex.render(props.expr, target.value);
-}, { deep: true });
+watch(() => props.expr, () => { render(); }, { deep: true });
+
+function render() {
+  katex.render(props.expr, target.value, {
+    displayMode: true,
+    trust: true
+  });
+}
 </script>
