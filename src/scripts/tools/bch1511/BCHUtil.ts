@@ -1,6 +1,7 @@
 import { BinaryValue } from './BinaryValue';
 
 export interface EncodeResult {
+  input: BinaryValue;
   quotient: BinaryValue;
   work: BinaryValue[];
 }
@@ -51,6 +52,7 @@ export class BCHUtil {
     }
 
     return {
+      input: infoBits,
       quotient: quotient,
       work: work
     };

@@ -22,6 +22,7 @@ watch(() => props.expr, () => { render(); }, { deep: true });
 function render() {
   katex.render(props.expr, target.value, {
     displayMode: true,
+    strict: false,
     trust: true
   });
 }
