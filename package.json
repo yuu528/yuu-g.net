@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "@mdi/font": "6.2.95",
+    "bchtool-vue": "github:yuu528/BCHTool-Vue",
     "brainfuxk-vue": "github:yuu528/BrainFuxk-Vue",
     "core-js": "^3.34.0",
-    "katex": "^0.16.11",
     "roboto-fontface": "*",
     "vue": "^3.4.21",
     "vuetify": "^3.5.8"
