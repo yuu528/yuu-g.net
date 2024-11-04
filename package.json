@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@mdi/font": "6.2.95",
+    "brainfuxk-vue": "github:yuu528/BrainFuxk-Vue",
     "core-js": "^3.34.0",
     "katex": "^0.16.11",
     "roboto-fontface": "*",

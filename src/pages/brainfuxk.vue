@@ -10,10 +10,10 @@
 
   <v-tabs-window v-model="tab">
     <v-tabs-window-item value="run">
-      <Run />
+      <BFRun />
     </v-tabs-window-item>
     <v-tabs-window-item value="gen">
-      <Generate />
+      <BFGenerate />
     </v-tabs-window-item>
   </v-tabs-window>
 </template>
@@ -26,9 +26,6 @@ meta:
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
-import Run from '@/components/brainfuxk/Run.vue';
-import Generate from '@/components/brainfuxk/Generate.vue';
 
 const tab = ref();
 </script>

@@ -12,12 +12,10 @@ declare module 'vue' {
     CardList: typeof import('./src/components/index/CardList.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     Formula: typeof import('./src/components/tools/Formula.vue')['default']
-    Generate: typeof import('./src/components/brainfuxk/Generate.vue')['default']
     Home: typeof import('./src/components/index/Home.vue')['default']
     NotFound: typeof import('./src/components/404/NotFound.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Run: typeof import('./src/components/brainfuxk/Run.vue')['default']
     TimelineCard: typeof import('./src/components/about/TimelineCard.vue')['default']
   }
 }
